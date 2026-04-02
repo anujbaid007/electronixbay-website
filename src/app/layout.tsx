@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Navbar } from "@/components/ui/navbar";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -87,6 +88,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
         </ThemeProvider>
       </body>
