@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
-const TOTAL_FRAMES = 192;
+const TOTAL_FRAMES = 163;
 const KEYFRAME_STEP = 8;
 const PLAYBACK_FPS = 30;
 const SESSION_KEY = "exb-intro-seen";
