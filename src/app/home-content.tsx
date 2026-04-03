@@ -1,6 +1,7 @@
 "use client";
 
-import { ScrollVideo } from "@/components/ui/scroll-video";
+import { useState, useCallback } from "react";
+import { IntroScreen } from "@/components/ui/scroll-video";
 import { HeroSection } from "@/components/sections/hero";
 import { TrustedBrandsSection } from "@/components/sections/trusted-brands";
 import { WhyChooseSection } from "@/components/sections/why-choose";
@@ -12,23 +13,29 @@ import { CTASection } from "@/components/sections/cta";
 import { Footer } from "@/components/sections/footer";
 
 export function HomeContent() {
+  const [introComplete, setIntroComplete] = useState(false);
+
+  const handleIntroComplete = useCallback(() => {
+    setIntroComplete(true);
+  }, []);
+
   return (
-    <main>
-      {/* Entrance: fullscreen scroll-driven laptop animation */}
-      <ScrollVideo />
+    <>
+      {/* Loading screen — auto-plays frame animation, then disappears */}
+      <IntroScreen onComplete={handleIntroComplete} />
 
-      {/* Shader hero — user "enters" the site here */}
-      <HeroSection />
-
-      {/* Content sections */}
-      <TrustedBrandsSection />
-      <WhyChooseSection />
-      <HowWeWorkSection />
-      <StatsSection />
-      <TestimonialsSection />
-      <GlobalSourcingSection />
-      <CTASection />
-      <Footer />
-    </main>
+      {/* Main site — always rendered, just hidden behind the intro overlay */}
+      <main style={{ visibility: introComplete ? "visible" : "hidden" }}>
+        <HeroSection />
+        <TrustedBrandsSection />
+        <WhyChooseSection />
+        <HowWeWorkSection />
+        <StatsSection />
+        <TestimonialsSection />
+        <GlobalSourcingSection />
+        <CTASection />
+        <Footer />
+      </main>
+    </>
   );
 }

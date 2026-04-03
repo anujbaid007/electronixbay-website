@@ -4,18 +4,19 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const TOTAL_FRAMES = 192;
 const KEYFRAME_STEP = 8;
+const PLAYBACK_FPS = 30;
+const SESSION_KEY = "exb-intro-seen";
 
-export function ScrollVideo({ onComplete }: { onComplete?: () => void }) {
+function IntroVideo({ onComplete }: { onComplete: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const framesRef = useRef<(HTMLImageElement | null)[]>(
     new Array(TOTAL_FRAMES).fill(null)
   );
-  const currentFrameRef = useRef(0);
   const drawFrameRef = useRef<(index: number) => void>(undefined);
-  const completedRef = useRef(false);
+  const playbackRef = useRef<number | null>(null);
 
   const [progress, setProgress] = useState(0);
+  const [fadeOut, setFadeOut] = useState(false);
 
   const nearestFrame = useCallback((idx: number): number => {
     if (framesRef.current[idx]) return idx;
@@ -60,17 +61,63 @@ export function ScrollVideo({ onComplete }: { onComplete?: () => void }) {
 
   drawFrameRef.current = drawFrame;
 
-  // Two-phase frame loading
+  // Canvas sizing
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  // Load frames → auto-play → fade out → signal complete
   useEffect(() => {
     let cancelled = false;
     let keyframeCount = 0;
     let phase2Started = false;
+    let playbackStarted = false;
 
     const keyframeIndices: number[] = [];
     for (let i = 1; i <= TOTAL_FRAMES; i += KEYFRAME_STEP)
       keyframeIndices.push(i);
     const totalKeyframes = keyframeIndices.length;
     const keyframeSet = new Set(keyframeIndices);
+
+    const startPlayback = () => {
+      if (playbackStarted || cancelled) return;
+      playbackStarted = true;
+
+      let currentFrame = 0;
+      const interval = 1000 / PLAYBACK_FPS;
+
+      const play = () => {
+        if (cancelled) return;
+
+        drawFrameRef.current?.(currentFrame);
+        setProgress(currentFrame / (TOTAL_FRAMES - 1));
+        currentFrame++;
+
+        if (currentFrame >= TOTAL_FRAMES) {
+          setFadeOut(true);
+          sessionStorage.setItem(SESSION_KEY, "1");
+          setTimeout(() => {
+            if (!cancelled) onComplete();
+          }, 600);
+          return;
+        }
+
+        playbackRef.current = window.setTimeout(play, interval);
+      };
+
+      play();
+    };
 
     const startPhase2 = () => {
       if (phase2Started) return;
@@ -93,117 +140,73 @@ export function ScrollVideo({ onComplete }: { onComplete?: () => void }) {
         if (cancelled) return;
         framesRef.current[frameNum - 1] = img;
         keyframeCount++;
-        if (keyframeCount === 1) {
-          drawFrameRef.current?.(currentFrameRef.current);
+        if (keyframeCount === 1) drawFrameRef.current?.(0);
+        if (keyframeCount >= totalKeyframes) {
+          startPhase2();
+          startPlayback();
         }
-        if (keyframeCount >= totalKeyframes) startPhase2();
       };
       img.onerror = () => {
         if (cancelled) return;
         keyframeCount++;
-        if (keyframeCount >= totalKeyframes) startPhase2();
+        if (keyframeCount >= totalKeyframes) {
+          startPhase2();
+          startPlayback();
+        }
       };
     });
 
     return () => {
       cancelled = true;
+      if (playbackRef.current) clearTimeout(playbackRef.current);
     };
-  }, []);
-
-  // Canvas sizing
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-      drawFrameRef.current?.(currentFrameRef.current);
-    };
-    resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
-
-  // Scroll-driven playback
-  useEffect(() => {
-    const FRAME_SPEED = 1.18;
-    let ticking = false;
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const container = containerRef.current;
-        if (!container) { ticking = false; return; }
-
-        const rect = container.getBoundingClientRect();
-        const scrollable = container.scrollHeight - window.innerHeight;
-        const scrolled = -rect.top;
-        const rawProgress = Math.max(0, Math.min(1, scrolled / scrollable));
-        const boosted = Math.min(1, rawProgress * FRAME_SPEED);
-
-        setProgress(boosted);
-
-        const frameIndex = Math.min(
-          TOTAL_FRAMES - 1,
-          Math.floor(boosted * (TOTAL_FRAMES - 1))
-        );
-
-        if (frameIndex !== currentFrameRef.current) {
-          currentFrameRef.current = frameIndex;
-          drawFrameRef.current?.(frameIndex);
-        }
-
-        // Fire completion callback when animation reaches the end
-        if (boosted >= 0.99 && !completedRef.current) {
-          completedRef.current = true;
-          onComplete?.();
-        }
-
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
   }, [onComplete]);
 
   return (
-    <div ref={containerRef} style={{ height: "300vh" }} className="relative">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0a0a0a]">
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
-        />
+    <div
+      className="fixed inset-0 z-[100] bg-[#0a0a0a] transition-opacity duration-500"
+      style={{
+        opacity: fadeOut ? 0 : 1,
+        pointerEvents: fadeOut ? "none" : "auto",
+      }}
+    >
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-        {/* Subtle vignette overlay */}
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
+      {/* Vignette */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
 
-        {/* Scroll indicator — fades out as user scrolls */}
+      {/* Progress bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/5">
         <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-500"
-          style={{ opacity: progress > 0.1 ? 0 : 1 }}
-        >
-          <span className="text-white/40 text-xs uppercase tracking-widest">
-            Scroll to explore
-          </span>
-          <div className="w-5 h-8 rounded-full border-2 border-white/20 flex items-start justify-center p-1">
-            <div className="w-1 h-2 bg-white/40 rounded-full animate-bounce" />
-          </div>
-        </div>
-
-        {/* Progress bar at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/5">
-          <div
-            className="h-full bg-gradient-to-r from-exb-green to-exb-green-dark transition-all duration-100 ease-out"
-            style={{ width: `${progress * 100}%` }}
-          />
-        </div>
+          className="h-full bg-gradient-to-r from-exb-green to-exb-green-dark transition-[width] duration-75 ease-linear"
+          style={{ width: `${progress * 100}%` }}
+        />
       </div>
     </div>
   );
+}
+
+/**
+ * Shows the intro video once per browser session.
+ * On subsequent visits (same tab/session), skips directly.
+ */
+export function IntroScreen({ onComplete }: { onComplete: () => void }) {
+  const [show, setShow] = useState(false);
+  const completedRef = useRef(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem(SESSION_KEY) === "1") {
+      // Already seen this session — skip immediately
+      if (!completedRef.current) {
+        completedRef.current = true;
+        onComplete();
+      }
+    } else {
+      setShow(true);
+    }
+  }, [onComplete]);
+
+  if (!show) return null;
+
+  return <IntroVideo onComplete={onComplete} />;
 }
