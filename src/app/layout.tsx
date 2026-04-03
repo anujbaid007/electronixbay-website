@@ -45,11 +45,13 @@ export const metadata: Metadata = {
     siteName: "ElectronixBay",
     title: "ElectronixBay | Premium Refurbished Laptops for Business",
     description: "Save up to 70% on enterprise-grade refurbished laptops. Dell, HP, Lenovo. Certified quality with warranty.",
+    images: [{ url: "/og-image.jpeg", width: 1200, height: 630, alt: "ElectronixBay" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "ElectronixBay | Premium Refurbished Laptops",
     description: "Enterprise-grade refurbished laptops at up to 70% savings. Dell, HP, Lenovo.",
+    images: ["/og-image.jpeg"],
   },
   robots: { index: true, follow: true },
 };
