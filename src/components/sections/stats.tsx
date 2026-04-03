@@ -46,7 +46,7 @@ function AnimatedCounter({
 
 const stats = [
   { target: 500, suffix: "+", label: "Businesses Served", caption: "" },
-  { target: 10000, suffix: "+", label: "Laptops Delivered", caption: "" },
+  { target: 10000, suffix: "+", label: "Laptops\nDelivered", caption: "" },
   { target: 70, suffix: "%", label: "Max Savings", caption: "Up to" },
   { target: 6, suffix: "", label: "Month Warranty", caption: "" },
 ];
@@ -80,7 +80,7 @@ export function StatsSection() {
                     />
                   </div>
                 </div>
-                <p className="text-sm text-gray-400 mt-2">{stat.label}</p>
+                <p className="text-sm text-gray-400 mt-2 whitespace-pre-line">{stat.label}</p>
               </div>
             </GlowCard>
           ))}
