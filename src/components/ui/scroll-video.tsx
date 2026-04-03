@@ -164,7 +164,7 @@ function IntroVideo({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-[#0a0a0a] transition-opacity duration-500"
+      className="fixed inset-0 z-[100] bg-black transition-opacity duration-500"
       style={{
         opacity: fadeOut ? 0 : 1,
         pointerEvents: fadeOut ? "none" : "auto",
