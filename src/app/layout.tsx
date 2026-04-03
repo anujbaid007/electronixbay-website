@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const SITE_URL = "https://electronixbay.com";
+const SITE_URL = "https://electronixbay-website.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
