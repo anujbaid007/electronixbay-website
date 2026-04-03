@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://electronixbay-website.vercel.app/og-image.jpeg",
-        width: 1376,
-        height: 768,
+        width: 1200,
+        height: 630,
         type: "image/jpeg",
         alt: "ElectronixBay — Premium Refurbished Laptops for Business",
       },
@@ -62,8 +62,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://electronixbay-website.vercel.app/og-image.jpeg",
-        width: 1376,
-        height: 768,
+        width: 1200,
+        height: 630,
         alt: "ElectronixBay — Premium Refurbished Laptops for Business",
       },
     ],
