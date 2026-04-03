@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     description: "Save up to 70% on enterprise-grade refurbished laptops. Dell, HP, Lenovo. Certified quality with warranty.",
     images: [
       {
-        url: "https://electronixbay-website.vercel.app/og-image.jpeg",
+        url: "https://electronixbay-website.vercel.app/og-banner.jpeg",
         width: 1200,
         height: 630,
         type: "image/jpeg",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     description: "Enterprise-grade refurbished laptops at up to 70% savings. Dell, HP, Lenovo.",
     images: [
       {
-        url: "https://electronixbay-website.vercel.app/og-image.jpeg",
+        url: "https://electronixbay-website.vercel.app/og-banner.jpeg",
         width: 1200,
         height: 630,
         alt: "ElectronixBay — Premium Refurbished Laptops for Business",
@@ -93,11 +93,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta property="og:image" content="https://electronixbay-website.vercel.app/og-image.jpeg" />
+        <meta property="og:image" content="https://electronixbay-website.vercel.app/og-banner.jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/jpeg" />
-        <meta name="twitter:image" content="https://electronixbay-website.vercel.app/og-image.jpeg" />
+        <meta name="twitter:image" content="https://electronixbay-website.vercel.app/og-banner.jpeg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
