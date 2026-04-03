@@ -1,7 +1,9 @@
+import { HeroSection } from "@/components/sections/hero";
+
 export default function Home() {
   return (
     <main>
-      <h1>ElectronixBay</h1>
+      <HeroSection />
     </main>
   );
 }
