@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "motion/react";
-import { ShineBorder } from "@/components/ui/shine-border";
+import { GlowCard } from "@/components/ui/glow-card";
 
 function AnimatedCounter({
   target,
@@ -45,36 +45,44 @@ function AnimatedCounter({
 }
 
 const stats = [
-  { target: 500, suffix: "+", label: "Businesses Served" },
-  { target: 10000, suffix: "+", label: "Laptops Delivered" },
-  { target: 70, suffix: "%", label: "Average Savings" },
-  { target: 6, suffix: "", label: "Month Warranty" },
+  { target: 500, suffix: "+", label: "Businesses Served", caption: "" },
+  { target: 10000, suffix: "+", label: "Laptops Delivered", caption: "" },
+  { target: 70, suffix: "%", label: "Max Savings", caption: "Up to" },
+  { target: 6, suffix: "", label: "Month Warranty", caption: "" },
 ];
 
 export function StatsSection() {
   return (
     <section className="py-16 md:py-24 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {stats.map((stat) => (
-            <ShineBorder
+            <GlowCard
               key={stat.label}
-              borderWidth={1}
-              duration={8}
-              color={["#2ECC71", "#27AE60"]}
-              borderRadius={16}
+              glowColor="green"
+              className="p-6 text-center"
             >
-              <div className="p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white">
-                  <AnimatedCounter
-                    target={stat.target}
-                    suffix={stat.suffix}
-                    duration={2}
-                  />
+              <div className="relative z-10">
+                <div className="relative flex items-center justify-center">
+                  {stat.caption && (
+                    <span className="absolute left-4 bottom-1 text-[10px] font-medium text-white uppercase tracking-wide">
+                      {stat.caption}
+                    </span>
+                  )}
+                  <div
+                    className="text-3xl md:text-4xl font-bold text-white"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    <AnimatedCounter
+                      target={stat.target}
+                      suffix={stat.suffix}
+                      duration={2}
+                    />
+                  </div>
                 </div>
-                <p className="text-sm text-white/60 mt-2">{stat.label}</p>
+                <p className="text-sm text-gray-400 mt-2">{stat.label}</p>
               </div>
-            </ShineBorder>
+            </GlowCard>
           ))}
         </div>
       </div>

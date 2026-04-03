@@ -1,91 +1,22 @@
 "use client";
 
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 
-// ─── Inline SVG brand wordmarks ───────────────────────────────────────────────
-
-function DellLogo({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 72 28"
-      className={cn("h-8 md:h-10 w-auto", className)}
-      aria-label="Dell"
-      fill="currentColor"
-    >
-      {/* Simplified Dell wordmark using geometric letterforms */}
-      <text
-        x="0"
-        y="22"
-        fontFamily="'Arial', 'Helvetica Neue', sans-serif"
-        fontWeight="700"
-        fontSize="26"
-        letterSpacing="-0.5"
-      >
-        DELL
-      </text>
-    </svg>
-  );
-}
-
-function HPLogo({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 50 28"
-      className={cn("h-8 md:h-10 w-auto", className)}
-      aria-label="HP"
-      fill="currentColor"
-    >
-      <text
-        x="0"
-        y="22"
-        fontFamily="'Arial', 'Helvetica Neue', sans-serif"
-        fontWeight="700"
-        fontSize="26"
-        letterSpacing="1"
-      >
-        hp
-      </text>
-    </svg>
-  );
-}
-
-function LenovoLogo({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 110 28"
-      className={cn("h-8 md:h-10 w-auto", className)}
-      aria-label="Lenovo"
-      fill="currentColor"
-    >
-      <text
-        x="0"
-        y="22"
-        fontFamily="'Arial', 'Helvetica Neue', sans-serif"
-        fontWeight="700"
-        fontSize="22"
-        letterSpacing="2"
-      >
-        LENOVO
-      </text>
-    </svg>
-  );
-}
-
-// ─── Brand list ───────────────────────────────────────────────────────────────
+// ─── Brand list ──────────────────────────────────────────────────────────────
 
 const brands = [
-  { id: "dell", name: "Dell", Logo: DellLogo },
-  { id: "hp", name: "HP", Logo: HPLogo },
-  { id: "lenovo", name: "Lenovo", Logo: LenovoLogo },
+  { id: "dell", name: "Dell", src: "/brands/dell.png", size: "h-14 md:h-16" },
+  { id: "lenovo", name: "Lenovo", src: "/brands/lenovo.png", size: "h-10 md:h-12" },
+  { id: "hp", name: "HP", src: "/brands/hp.png", size: "h-14 md:h-16" },
 ];
 
-// ─── Section ──────────────────────────────────────────────────────────────────
+// ─── Section ─────────────────────────────────────────────────────────────────
 
 export function TrustedBrandsSection() {
   return (
     <motion.section
-      className="py-16 md:py-20"
+      className="py-16 md:py-20 bg-[#0a0a0a]"
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -98,7 +29,7 @@ export function TrustedBrandsSection() {
             Trusted Partners
           </p>
           <h2
-            className="text-3xl md:text-4xl font-bold text-foreground leading-tight"
+            className="text-3xl md:text-4xl font-bold text-white leading-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Powering Businesses with Trusted Brands
@@ -106,14 +37,14 @@ export function TrustedBrandsSection() {
         </div>
 
         {/* Logo row */}
-        <div className="flex flex-row items-center justify-center gap-12 md:gap-16">
-          {brands.map(({ id, name, Logo }, i) => (
+        <div className="flex flex-row items-center justify-center gap-14 md:gap-20">
+          {brands.map(({ id, name, src, size }, i) => (
             <motion.div
               key={id}
-              className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default"
+              className="opacity-70 hover:opacity-100 transition-all duration-300 cursor-default brightness-0 invert hover:brightness-100 hover:invert-0"
               initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 0.6, y: 0 }}
-              whileHover={{ opacity: 1 }}
+              whileInView={{ opacity: 0.7, y: 0 }}
+              whileHover={{ opacity: 1, scale: 1.06 }}
               viewport={{ once: true }}
               transition={{
                 duration: 0.5,
@@ -122,13 +53,20 @@ export function TrustedBrandsSection() {
               }}
               aria-label={name}
             >
-              <Logo />
+              <Image
+                src={src}
+                alt={name}
+                width={200}
+                height={200}
+                className={`${size} w-auto object-contain`}
+                unoptimized
+              />
             </motion.div>
           ))}
         </div>
 
         {/* Footer note */}
-        <p className="mt-10 text-center text-sm text-muted-foreground">
+        <p className="mt-10 text-center text-sm text-gray-500">
           Trusted by 500+ businesses across India
         </p>
       </div>

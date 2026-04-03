@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { IntroScreen } from "@/components/ui/scroll-video";
 import { HeroSection } from "@/components/sections/hero";
 import { TrustedBrandsSection } from "@/components/sections/trusted-brands";
+import { ProductShowcaseSection } from "@/components/sections/product-showcase";
 import { WhyChooseSection } from "@/components/sections/why-choose";
 import { HowWeWorkSection } from "@/components/sections/how-we-work";
 import { StatsSection } from "@/components/sections/stats";
@@ -28,6 +29,7 @@ export function HomeContent() {
       <main style={{ visibility: introComplete ? "visible" : "hidden" }}>
         <HeroSection />
         <TrustedBrandsSection />
+        <ProductShowcaseSection />
         <WhyChooseSection />
         <HowWeWorkSection />
         <StatsSection />

@@ -24,20 +24,16 @@ function LinkedinIcon({ className }: { className?: string }) {
 }
 
 const companyLinks = [
+  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
   { label: "Contact", href: "/contact" },
 ];
 
 const productLinks = [
-  { label: "Business Laptops", href: "/products#business" },
-  { label: "Student Laptops", href: "/products#student" },
-  { label: "High Performance", href: "/products#high-performance" },
-];
-
-const legalLinks = [
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Service", href: "#" },
+  { label: "Business Laptops", href: "/products/business-laptops" },
+  { label: "Student Laptops", href: "/products/student-laptops" },
+  { label: "High Performance", href: "/products/high-performance" },
 ];
 
 const socialLinks = [
@@ -50,7 +46,7 @@ export function Footer() {
     <footer className="bg-[#0a0a0a] text-gray-300 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-16">
 
-        {/* Main grid: brand + 3 link columns */}
+        {/* Main grid: brand + 3 columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
           {/* Brand column */}
@@ -59,14 +55,30 @@ export function Footer() {
               <Image
                 src="/logo-white.png"
                 alt="ElectronixBay"
-                width={160}
-                height={40}
-                className="h-10 w-auto object-contain"
+                width={400}
+                height={207}
+                className="h-10 md:h-11 w-auto object-contain"
+                unoptimized
               />
             </Link>
-            <p className="text-sm text-gray-400 leading-relaxed max-w-[220px]">
-              Premium refurbished laptops for growing businesses
+            <p className="text-sm text-gray-400 leading-relaxed max-w-[240px]">
+              Premium refurbished laptops for growing businesses across India.
             </p>
+            {/* Social icons */}
+            <div className="flex items-center gap-3 mt-1">
+              {socialLinks.map(({ label, href, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className={cn(
+                    "w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:text-exb-green hover:bg-white/10 transition-all duration-200"
+                  )}
+                >
+                  <Icon className="size-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Company links */}
@@ -79,9 +91,7 @@ export function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className={cn(
-                      "text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
-                    )}
+                    className="text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
                   >
                     {label}
                   </Link>
@@ -100,9 +110,7 @@ export function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className={cn(
-                      "text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
-                    )}
+                    className="text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
                   >
                     {label}
                   </Link>
@@ -111,26 +119,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal + Contact */}
+          {/* Contact */}
           <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-white">
-              Legal
-            </h3>
-            <ul className="flex flex-col gap-3 mb-6">
-              {legalLinks.map(({ label, href }) => (
-                <li key={label}>
-                  <Link
-                    href={href}
-                    className={cn(
-                      "text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
-                    )}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
             <h3 className="text-sm font-semibold uppercase tracking-widest text-white">
               Contact
             </h3>
@@ -138,9 +128,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:support@electronixbay.com"
-                  className={cn(
-                    "flex items-center gap-2 text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
-                  )}
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
                 >
                   <Mail className="size-4 shrink-0" />
                   support@electronixbay.com
@@ -148,13 +136,11 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="tel:+91XXXXXXXXXX"
-                  className={cn(
-                    "flex items-center gap-2 text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
-                  )}
+                  href="tel:+917508807490"
+                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-exb-green transition-colors duration-200"
                 >
                   <Phone className="size-4 shrink-0" />
-                  +91-XXXXXXXXXX
+                  +91 75088 07490
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm text-gray-400">
@@ -170,22 +156,9 @@ export function Footer() {
           <p className="text-sm text-gray-500">
             &copy; 2024&ndash;2026 ElectronixBay. All rights reserved.
           </p>
-
-          {/* Social icons */}
-          <div className="flex items-center gap-4">
-            {socialLinks.map(({ label, href, icon: Icon }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                className={cn(
-                  "text-gray-500 hover:text-exb-green transition-colors duration-200"
-                )}
-              >
-                <Icon className="size-5" />
-              </a>
-            ))}
-          </div>
+          <p className="text-xs text-gray-600">
+            Gurugram, Haryana, India
+          </p>
         </div>
 
       </div>

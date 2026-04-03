@@ -6,6 +6,7 @@ import {
   Briefcase,
   GraduationCap,
   Zap,
+  ArrowRight,
   Search,
   Sparkles,
   Monitor,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { BauhausCard } from "@/components/ui/bauhaus-card";
+import { TrustedBrandsSection } from "@/components/sections/trusted-brands";
 import { CTASection } from "@/components/sections/cta";
 import { Footer } from "@/components/sections/footer";
 
@@ -30,7 +32,8 @@ const categories = [
     description:
       "Built for the boardroom and beyond. These enterprise-series machines feature robust build quality, MIL-STD certifications, and long-term reliability that consumer laptops can't match. Ideal for daily office work, video conferencing, and multitasking.",
     cta: "Request Quote for Business",
-    href: "/contact?category=business",
+    ctaHref: "/contact?category=business",
+    pageHref: "/products/business-laptops",
   },
   {
     id: "student",
@@ -41,7 +44,8 @@ const categories = [
     description:
       "Affordable, reliable machines perfect for computer labs, online learning, and daily student use. We supply institutions with bulk orders — from 20 units to 200+ — with consistent quality across every device in the batch.",
     cta: "Request Quote for Students",
-    href: "/contact?category=student",
+    ctaHref: "/contact?category=student",
+    pageHref: "/products/student-laptops",
   },
   {
     id: "high-performance",
@@ -52,7 +56,8 @@ const categories = [
     description:
       "When your team needs serious processing power — Figma, Docker, video editing, or data analysis — these machines deliver. Higher-spec configurations with upgraded RAM, fast SSDs, and strong multi-core processors.",
     cta: "Request Quote for Performance",
-    href: "/contact?category=performance",
+    ctaHref: "/contact?category=performance",
+    pageHref: "/products/high-performance",
   },
 ];
 
@@ -168,12 +173,20 @@ export function ProductsContent() {
                         {cat.description}
                       </p>
 
-                      <Link
-                        href={cat.href}
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-exb-green to-exb-green-dark rounded-xl hover:shadow-lg hover:shadow-exb-green/20 transition-all duration-300"
-                      >
-                        {cat.cta}
-                      </Link>
+                      <div className="flex flex-col gap-3">
+                        <Link
+                          href={cat.ctaHref}
+                          className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-exb-green to-exb-green-dark rounded-xl hover:shadow-lg hover:shadow-exb-green/20 transition-all duration-300"
+                        >
+                          {cat.cta}
+                        </Link>
+                        <Link
+                          href={cat.pageHref}
+                          className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-exb-green hover:underline"
+                        >
+                          Learn more <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </div>
                     </div>
                   </SpotlightCard>
                 </motion.div>
@@ -232,6 +245,7 @@ export function ProductsContent() {
         </div>
       </section>
 
+      <TrustedBrandsSection />
       <CTASection />
       <Footer />
     </main>

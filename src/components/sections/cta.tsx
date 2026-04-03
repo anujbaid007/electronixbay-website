@@ -45,7 +45,7 @@ export function CTASection() {
             </motion.div>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
               <a
-                href="https://wa.me/919XXXXXXXXX?text=Hi%2C%20I%20need%20a%20quote%20for%20refurbished%20laptops."
+                href="https://wa.me/917508807490?text=Hi%2C%20I%20need%20a%20quote%20for%20refurbished%20laptops."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-2xl hover:bg-white/5 transition-all duration-300"
