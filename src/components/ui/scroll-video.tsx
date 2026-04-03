@@ -172,6 +172,9 @@ function IntroVideo({ onComplete }: { onComplete: () => void }) {
     >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
+      {/* Bottom-right cover box */}
+      <div className="absolute bottom-0 right-0 w-32 h-16 bg-black" />
+
       {/* Vignette */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
 
