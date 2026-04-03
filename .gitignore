@@ -40,8 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# generated video frames (192 JPEGs generated at build time)
-/public/frames/
 
 # raw source assets (stored in project root, not committed)
 Brochure.pdf
