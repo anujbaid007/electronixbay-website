@@ -44,7 +44,7 @@ function IntroVideo({ onComplete }: { onComplete: () => void }) {
       const iw = img.naturalWidth;
       const ih = img.naturalHeight;
 
-      const scale = Math.max(cw / iw, ch / ih);
+      const scale = Math.max(cw / iw, ch / ih) * 0.85;
       const dw = iw * scale;
       const dh = ih * scale;
       const dx = (cw - dw) / 2;
