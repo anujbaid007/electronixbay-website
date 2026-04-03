@@ -63,9 +63,9 @@ export function StatsSection() {
               className="p-6 text-center"
             >
               <div className="relative z-10">
-                <div className="relative flex items-center justify-center">
+                <div className="flex flex-col items-center justify-center">
                   {stat.caption && (
-                    <span className="absolute left-4 bottom-1 text-[10px] font-medium text-white uppercase tracking-wide">
+                    <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wide mb-1">
                       {stat.caption}
                     </span>
                   )}
